@@ -63,19 +63,12 @@ const meets = [
 ];
 
 class Meets extends React.Component<Props> {
+  store: MeetsStore;
   render() {
     const { location } = this.props;
     const hasId = /meets\/[0-9]*/.test(location.pathname);
     return (
-      <Layout
-        subheader={
-          hasId
-            ? <span>
-                {meets[0].name}
-              </span>
-            : undefined
-        }
-      >
+      <Layout subheader={hasId ? <span>{meets[0].name}</span> : undefined}>
         {!hasId && <MeetListView meets={meets} />}
         <Route
           path="/meets/:id"
