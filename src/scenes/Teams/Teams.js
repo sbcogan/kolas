@@ -3,6 +3,7 @@ import React from 'react';
 import Layout from 'components/Layout';
 import { Flex } from 'reflexbox';
 import { Table, Button, Input, Select } from 'antd';
+import styled from 'styled-components';
 
 const columns = [
   {
@@ -27,22 +28,26 @@ const teams = [
   {
     id: 1,
     name: 'Duke',
-    gender: 'mens'
+    gender: 'Mens',
+    region: 'Southeast'
   },
   {
     id: 2,
     name: 'Duke',
-    gender: 'womens'
+    gender: 'Womens',
+    region: 'Southeast'
   },
   {
     id: 3,
     name: 'UNC',
-    gender: 'mens'
+    gender: 'Mens',
+    region: 'Southeast'
   },
   {
     id: 4,
     name: 'UNC',
-    gender: 'womens'
+    gender: 'Womens',
+    region: 'Southeast'
   }
 ];
 
@@ -51,7 +56,7 @@ class Teams extends React.Component<{}> {
     return (
       <Layout>
         <Flex column auto>
-          <Table
+          <FlexTable
             bordered
             title={() => 'Teams'}
             dataSource={teams}
@@ -65,5 +70,26 @@ class Teams extends React.Component<{}> {
     );
   }
 }
+
+const PaddedSelect = styled(Select)`
+  margin-right: 10px;
+`;
+
+const PaddedInput = styled(Input)`
+  margin-right: 10px;
+`;
+
+const InputRow = styled(Flex)`
+  margin: 30px;
+  margin-bottom: 10px;
+`;
+
+const FlexTable = styled(Table)`
+  margin: 30px;
+  margin-top: 0px;
+  .ant-table {
+    background: #fff;
+  }
+`;
 
 export default Teams;
