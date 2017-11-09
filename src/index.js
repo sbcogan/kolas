@@ -17,6 +17,7 @@ import Regions from 'scenes/Regions';
 
 const requireAuth = (nextState, replace) => {
   if (!user.loggedIn) {
+    console.log('Not logged in, redirecting');
     replace({
       pathname: '/login'
     });

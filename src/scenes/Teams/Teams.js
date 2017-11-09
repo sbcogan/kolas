@@ -2,14 +2,18 @@
 import React from 'react';
 import Layout from 'components/Layout';
 import { Flex } from 'reflexbox';
-import { Table, Button, Input, Select } from 'antd';
+import { observer } from 'mobx-react';
+import { Table, Spin } from 'antd';
 import styled from 'styled-components';
+import TeamsStore from './TeamsStore';
+
+type Props = {};
 
 const columns = [
   {
     title: 'Name',
-    dataIndex: 'name',
-    key: 'name'
+    dataIndex: 'team_name',
+    key: 'team_name'
   },
   {
     title: 'Gender',
@@ -20,73 +24,50 @@ const columns = [
     title: 'Region',
     dataIndex: 'region',
     key: 'region'
+  },
+  {
+    title: 'Region Rank',
+    dataIndex: 'team_rank',
+    key: 'team_rank'
   }
 ];
 
-// Fake the data for now
-const teams = [
-  {
-    id: 1,
-    name: 'Duke',
-    gender: 'Mens',
-    region: 'Southeast'
-  },
-  {
-    id: 2,
-    name: 'Duke',
-    gender: 'Womens',
-    region: 'Southeast'
-  },
-  {
-    id: 3,
-    name: 'UNC',
-    gender: 'Mens',
-    region: 'Southeast'
-  },
-  {
-    id: 4,
-    name: 'UNC',
-    gender: 'Womens',
-    region: 'Southeast'
-  }
-];
+@observer
+class Teams extends React.Component<Props> {
+  store: TeamsStore;
 
-class Teams extends React.Component<{}> {
+  constructor(props: Props) {
+    super(props);
+    this.store = new TeamsStore();
+  }
+
+  componentDidMount() {
+    this.store.getTeams();
+  }
+
   render() {
     return (
       <Layout>
         <Flex column auto>
-          <FlexTable
-            bordered
-            title={() => 'Teams'}
-            dataSource={teams}
-            columns={columns}
-            pagination={{
-              defaultPageSize: 5
-            }}
-          />
+          {this.store.loading
+            ? <Spin />
+            : <FlexTable
+                bordered
+                title={() => 'Teams'}
+                dataSource={this.store.teams}
+                columns={columns}
+                pagination={{
+                  defaultPageSize: 5
+                }}
+              />}
         </Flex>
       </Layout>
     );
   }
 }
 
-const PaddedSelect = styled(Select)`
-  margin-right: 10px;
-`;
-
-const PaddedInput = styled(Input)`
-  margin-right: 10px;
-`;
-
-const InputRow = styled(Flex)`
-  margin: 30px;
-  margin-bottom: 10px;
-`;
-
 const FlexTable = styled(Table)`
   margin: 30px;
-  margin-top: 0px;
   .ant-table {
     background: #fff;
   }

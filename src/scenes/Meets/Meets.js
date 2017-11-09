@@ -1,78 +1,51 @@
 // @flow
 import React from 'react';
 import Layout from 'components/Layout';
+import { observer } from 'mobx-react';
 import { Route, withRouter } from 'react-router';
 import MeetListView from './components/MeetListView';
 import MeetDetail from './components/MeetDetail';
+import MeetsStore from './MeetsStore';
 
 type Props = {
   location: Object
 };
 
-// Fake the data for now
-const meets = [
-  {
-    id: 1,
-    name: 'Battle in Beantown',
-    date: '09/22/2017',
-    teams: [
-      {
-        name: 'Duke',
-        id: 2
-      },
-      {
-        name: 'UNC',
-        id: 3
-      }
-    ]
-  },
-  {
-    id: 2,
-    name: 'Panorama Farms',
-    date: '10/12/2017',
-    teams: [
-      {
-        name: 'Syracuse',
-        id: 5
-      },
-      {
-        name: 'Villanova',
-        id: 7
-      },
-      {
-        name: 'Louiville',
-        id: 8
-      }
-    ]
-  },
-  {
-    id: 3,
-    name: 'Princeton Invitational',
-    date: '10/24/2017',
-    teams: [
-      {
-        name: 'Princeton',
-        id: 10
-      },
-      {
-        name: 'Cornell',
-        id: 11
-      }
-    ]
-  }
-];
-
+@observer
 class Meets extends React.Component<Props> {
   store: MeetsStore;
+
+  constructor(props) {
+    super(props);
+    this.store = new MeetsStore();
+  }
+
+  componentDidMount() {
+    this.store.getMeets();
+  }
+
   render() {
     const { location } = this.props;
     const hasId = /meets\/[0-9]*/.test(location.pathname);
+    if (hasId) {
+      this.store.setActiveMeet(
+        parseInt(/meets\/([0-9])*/.exec(location.pathname)[1], 10)
+      );
+    }
     return (
-      <Layout subheader={hasId ? <span>{meets[0].name}</span> : undefined}>
-        {!hasId && <MeetListView meets={meets} />}
+      <Layout
+        subheader={
+          hasId
+            ? <span>
+                {this.store.activeMeet.name || ''}
+              </span>
+            : undefined
+        }
+      >
+        {!hasId && <MeetListView meets={this.store.meets} />}
         <Route
           path="/meets/:id"
-          component={() => <MeetDetail meet={meets[0]} />}
+          component={() => <MeetDetail meets={this.store.activeMeet} />}
         />
       </Layout>
     );

@@ -2,8 +2,9 @@
 import { observable, action } from 'mobx';
 import { getRequest } from 'helpers/api';
 
-class KolasStore {
+class TeamsStore {
   @observable teams: Object[] = [];
+  @observable loading: boolean = true;
 
   @action
   getTeams = async (): Promise<*> => {
@@ -11,6 +12,7 @@ class KolasStore {
       const res = await getRequest('/api/teams', {});
       if (res.data) {
         this.teams = res.data;
+        this.loading = false;
       }
     } catch (err) {
       console.log(err);
