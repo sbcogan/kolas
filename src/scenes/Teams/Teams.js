@@ -12,23 +12,13 @@ type Props = {};
 const columns = [
   {
     title: 'Name',
-    dataIndex: 'team_name',
-    key: 'team_name'
+    dataIndex: 'name',
+    key: 'name'
   },
   {
     title: 'Gender',
     dataIndex: 'gender',
     key: 'gender'
-  },
-  {
-    title: 'Region',
-    dataIndex: 'region',
-    key: 'region'
-  },
-  {
-    title: 'Region Rank',
-    dataIndex: 'team_rank',
-    key: 'team_rank'
   }
 ];
 
