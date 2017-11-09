@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Tag } from 'antd';
+import { Card } from 'antd';
 import styled from 'styled-components';
 
 type Props = {
@@ -14,20 +14,11 @@ const MeetListItem = ({ meet, className }: Props) => {
     <FlexCard
       className={className}
       title={
-        <Link to={`/meets/${meet.id}`}>
+        <Link to={`/meets/${meet.ID}`}>
           {meet.name}
         </Link>
       }
-      extra={meet.date}
-    >
-      {meet.teams.map(team =>
-        <Tag>
-          <Link to={`/teams/${team.id}`}>
-            {team.name}
-          </Link>
-        </Tag>
-      )}
-    </FlexCard>
+    />
   );
 };
 
