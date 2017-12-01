@@ -3,14 +3,14 @@ import { observable, action } from 'mobx';
 import { getRequest } from 'helpers/api';
 
 class KolasStore {
-  @observable teams: Object[] = [];
+  @observable rankings: Object = {};
 
   @action
-  getTeams = async (): Promise<*> => {
+  getRankings = async (): Promise<*> => {
     try {
-      const res = await getRequest('/api/teams', {});
+      const res = await getRequest('/api/rankings', {});
       if (res.data) {
-        this.teams = res.data;
+        this.rankings = res.data;
       }
     } catch (err) {
       console.log(err);
