@@ -4,7 +4,7 @@ import { Flex } from 'reflexbox';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import { type RouterHistory } from 'react-router-dom';
-import { Form, Icon, Input, Button, Alert } from 'antd';
+import { Form, Icon, Input, Button } from 'antd';
 import styled from 'styled-components';
 import { colors } from 'constants/styles';
 import LoginStore from './LoginStore';
@@ -91,10 +91,6 @@ const UserIcon = styled(Icon)`
   margin-bottom: 30px;
 `;
 
-const StyledAlert = styled(Alert)`
-  margin-bottom: 15px;
-`;
-
 const BannerImage = styled.img`
   object-fit: cover;
   flex-shrink: 0;
@@ -128,7 +124,7 @@ const FullHeight = styled(Flex)`
 
 const Banner = styled(Flex)`
   background-color: ${colors.teal};
-  overflow: hidden;
+  overflow: hidden
   position: relative;
 `;
 
