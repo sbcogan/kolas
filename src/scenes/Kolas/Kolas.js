@@ -72,7 +72,7 @@ class Kolas extends React.Component<Props> {
   }
 
   componentDidMount() {
-    this.store.getTeams();
+    this.store.getRankings();
   }
 
   handleGenderChange = () => {};
@@ -103,7 +103,11 @@ class Kolas extends React.Component<Props> {
               <Option value="mens">Men's</Option>
               <Option value="lucy">Women's</Option>
             </PaddedSelect>
-            <Button type="primary" size="large">
+            <Button
+              type="primary"
+              size="large"
+              onClick={this.store.getRankings}
+            >
               Predict Bids
             </Button>
           </InputRow>
