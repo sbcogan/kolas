@@ -81,10 +81,6 @@ class Kolas extends React.Component<Props> {
     return (
       <Layout>
         <Flex column auto>
-          <div>
-            Rankings:
-            {JSON.stringify(this.store.rankings)}
-          </div>
           <InputRow>
             <PaddedInput size="large" placeholder="filter teams" />
             <PaddedSelect
