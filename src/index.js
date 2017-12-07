@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import StoreProvider, { user } from 'stores';
 import { LocaleProvider } from 'antd';
