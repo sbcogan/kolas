@@ -124,7 +124,7 @@ const FullHeight = styled(Flex)`
 
 const Banner = styled(Flex)`
   background-color: ${colors.teal};
-  overflow: hidden
+  overflow: hidden;
   position: relative;
 `;
 
