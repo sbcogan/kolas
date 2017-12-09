@@ -1,11 +1,16 @@
 // @flow
 import React from 'react';
-import { Table } from 'antd';
+import { Table, Tabs } from 'antd';
 import { Flex, Box } from 'reflexbox';
+import { observer } from 'mobx-react';
+import { withRouter } from 'react-router';
 import styled from 'styled-components';
+import MeetDetailStore from './MeetDetailStore';
+
+const TabPane = Tabs.TabPane;
 
 type Props = {
-  meet: Object
+  match: Object
 };
 
 const columns = [
@@ -26,49 +31,59 @@ const columns = [
   }
 ];
 
-const results = [
-  {
-    team: 'Syracuse',
-    region: 'Northeast',
-    placement: 1
-  },
-  {
-    team: 'Iona',
-    region: 'Northeast',
-    placement: 2
-  },
-  {
-    team: 'Cornell',
-    region: 'Northeast',
-    placement: 3
-  },
-  {
-    team: 'Georgetown',
-    region: 'MidAtlantic',
-    placement: 4
-  },
-  {
-    team: 'University of Pennsylvania',
-    region: 'MidAtlantic',
-    placement: 5
-  }
-];
-
+@observer
 class MeetDetail extends React.Component<Props> {
-  render() {
-    const { meet } = this.props;
+  store: MeetDetailStore;
+
+  constructor(props: Props) {
+    super(props);
+    const { match: { params: { id } } } = props;
+    this.store = new MeetDetailStore({ id });
+  }
+
+  componentDidMount() {
+    this.store.getMeet();
+  }
+
+  onTabChange = () => {};
+
+  renderMeetContent = () => {
+    if (this.store.loading) {
+      return <div>loading</div>;
+    }
     return (
-      <Flex auto>
-        <Box w={[1, 3 / 4, 3 / 4]}>
+      <StyledTabs defaultActiveKey="mens" onChange={this.onTabChange}>
+        <TabPane tab="Mens" key="mens">
           <FlexTable
             bordered
             title={() => 'Results'}
-            dataSource={results}
+            dataSource={this.store.mensResults}
             columns={columns}
             pagination={{
               defaultPageSize: 5
             }}
           />
+        </TabPane>
+        <TabPane tab="Womens" key="womens">
+          <FlexTable
+            bordered
+            title={() => 'Results'}
+            dataSource={this.store.womensResults}
+            columns={columns}
+            pagination={{
+              defaultPageSize: 5
+            }}
+          />
+        </TabPane>
+      </StyledTabs>
+    );
+  };
+
+  render() {
+    return (
+      <Flex auto>
+        <Box w={[1, 3 / 4, 3 / 4]}>
+          {this.renderMeetContent()}
         </Box>
         <Box w={[1, 1 / 4, 1 / 4]}>
           <AddOrInfo auto align="center" justify="center">
@@ -79,6 +94,12 @@ class MeetDetail extends React.Component<Props> {
     );
   }
 }
+
+const StyledTabs = styled(Tabs)`
+  .ant-tabs-bar {
+    padding-left: 32px;
+  }
+`;
 
 const AddOrInfo = styled(Flex)`
   margin: 30px 30px 30px 0;
@@ -96,4 +117,4 @@ const FlexTable = styled(Table)`
   }
 `;
 
-export default MeetDetail;
+export default withRouter(MeetDetail);
