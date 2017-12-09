@@ -29,7 +29,7 @@ ReactDOM.render(
     <StoreProvider>
       <Router>
         <div>
-          <Redirect from="/" exact to="/login" />
+          {/* <Redirect from="/" exact to="/login" /> */}
           <Route path="/kolas" component={Kolas} onEnter={requireAuth} />
           <Route path="/regions" component={Regions} onEnter={requireAuth} />
           <Route path="/teams" component={Teams} onEnter={requireAuth} />

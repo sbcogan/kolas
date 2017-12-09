@@ -18,47 +18,9 @@ const columns = [
     key: 'name'
   },
   {
-    title: 'Region',
-    dataIndex: 'region',
-    key: 'region'
-  },
-  {
     title: 'Points',
     dataIndex: 'points',
     key: 'points'
-  }
-];
-
-const data = [
-  {
-    name: 'Syracuse',
-    region: 'Northeast',
-    points: 14
-  },
-  {
-    name: 'Villanova',
-    region: 'Northeast',
-    points: 12
-  },
-  {
-    name: 'Louiville',
-    region: 'Northeast',
-    points: 9
-  },
-  {
-    name: 'Georgetown',
-    region: 'Midatlantic',
-    points: 9
-  },
-  {
-    name: 'University of Pennsylvania',
-    region: 'Midatlantic',
-    points: 8
-  },
-  {
-    name: 'Florida State',
-    region: 'South',
-    points: 6
   }
 ];
 
@@ -72,7 +34,7 @@ class Kolas extends React.Component<Props> {
   }
 
   componentDidMount() {
-    this.store.getRankings();
+    // this.store.getRankings();
   }
 
   handleGenderChange = () => {};
@@ -98,10 +60,10 @@ class Kolas extends React.Component<Props> {
               defaultValue="mens"
               size="large"
               style={{ width: 120 }}
-              onChange={this.handleGenderChange}
+              onChange={this.store.changeGender}
             >
               <Option value="mens">Men's</Option>
-              <Option value="lucy">Women's</Option>
+              <Option value="womens">Women's</Option>
             </PaddedSelect>
             <Button
               type="primary"
@@ -114,10 +76,14 @@ class Kolas extends React.Component<Props> {
           <FlexTable
             bordered
             title={() => 'Predicted at Large Bids'}
-            dataSource={data}
+            dataSource={
+              this.store.activeGender === 'mens'
+                ? this.store.mensRankings
+                : this.store.womensRankings
+            }
             columns={columns}
             pagination={{
-              defaultPageSize: 5
+              defaultPageSize: 10
             }}
           />
         </Flex>
