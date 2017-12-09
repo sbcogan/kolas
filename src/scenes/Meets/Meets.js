@@ -6,10 +6,27 @@ import { Route, withRouter } from 'react-router';
 import MeetListView from './components/MeetListView';
 import MeetDetail from './components/MeetDetail';
 import MeetsStore from './MeetsStore';
+import { Flex } from 'reflexbox';
+import { Table, Button, Input, Select } from 'antd';
+//import Layout from 'components/Layout';
+import styled from 'styled-components';
 
 type Props = {
   location: Object
 };
+
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  {
+    title: 'Date',
+    dataIndex: 'meet_date',
+    key: 'meet_date'
+  }
+];
 
 @observer
 class Meets extends React.Component<Props> {
@@ -35,21 +52,43 @@ class Meets extends React.Component<Props> {
     return (
       <Layout
         subheader={
-          hasId
-            ? <span>
-                {this.store.activeMeet.name || ''}
-              </span>
-            : undefined
+          hasId ? <span>{this.store.activeMeet.name || ''}</span> : undefined
         }
       >
-        {!hasId && <MeetListView meets={this.store.meets} />}
-        <Route
-          path="/meets/:id"
-          component={() => <MeetDetail meets={this.store.activeMeet} />}
-        />
+        <Flex column auto>
+          <InputRow>
+            {!hasId && <MeetListView meets={this.store.meets} />}
+            <Route
+              path="/meets/:id"
+              component={() => <MeetDetail meets={this.store.activeMeet} />}
+            />
+          </InputRow>
+          <FlexTable
+            bordered
+            title={() => 'Meets'}
+            dataSource={this.store.meets}
+            columns={columns}
+            pagination={{
+              defaultPageSize: 10
+            }}
+          />
+        </Flex>
       </Layout>
     );
   }
 }
+
+const InputRow = styled(Flex)`
+  margin: 30px;
+  margin-bottom: 10px;
+`;
+
+const FlexTable = styled(Table)`
+  margin: 30px;
+  margin-top: 0px;
+  .ant-table {
+    background: #fff;
+  }
+`;
 
 export default withRouter(Meets);
