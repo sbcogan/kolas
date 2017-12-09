@@ -34,7 +34,7 @@ class Kolas extends React.Component<Props> {
   }
 
   componentDidMount() {
-    // this.store.getRankings();
+    this.store.getRankings();
   }
 
   handleGenderChange = () => {};
