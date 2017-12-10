@@ -41,13 +41,14 @@ class Login extends React.Component<Props> {
     const { ui } = this.props;
     return (
       <FullHeight auto justify="center">
-        {ui.isDesktop &&
+        {ui.isDesktop && (
           <Banner justify="center" align="center" auto>
             <BannerImage src={banner} alt="banner" />
             <BannerTextContainer>
-              <BannerText>Welcome to AtLarge</BannerText>
+              <BannerText>Kolas Calculator</BannerText>
             </BannerTextContainer>
-          </Banner>}
+          </Banner>
+        )}
         <LoginForm>
           <Item column>
             <UserIcon type="user" style={{ fontSize: 60 }} />
@@ -68,8 +69,9 @@ class Login extends React.Component<Props> {
               icon="lock"
             />
           </Item>
-          {this.store.error &&
-            <StyledAlert message={this.store.error} type="error" />}
+          {this.store.error && (
+            <StyledAlert message={this.store.error} type="error" />
+          )}
           <Item>
             <Flex column auto>
               <Button type="primary" onClick={this.handleSubmit}>

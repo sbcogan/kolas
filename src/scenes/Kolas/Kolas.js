@@ -25,21 +25,6 @@ const columns = [
   }
 ];
 
-const fakedata = [
-  {
-    name: 'First Team',
-    points: 13000
-  },
-  {
-    name: 'Second Team',
-    points: 16500
-  },
-  {
-    name: 'Third Team',
-    points: 14250
-  }
-];
-
 @observer
 class Kolas extends React.Component<Props> {
   store: KolasStore;
@@ -89,58 +74,6 @@ class Kolas extends React.Component<Props> {
               Predict Bids
             </Button>
           </InputRow>
-          <TitleRow>
-            <h1>Top Three Predicted At Large Bids</h1>
-          </TitleRow>
-          <div style={{ background: '#ECECEC', padding: '30px' }}>
-            <Row gutter={16}>
-              <Col span={8}>
-                <Card
-                  title={
-                    '1. ' + this.store.activeGender === 'mens'
-                      ? this.store.mensRankings.name
-                      : this.store.womensRankings.name
-                  }
-                  bordered={false}
-                >
-                  {this.store.activeGender === 'mens'
-                    ? this.store.mensRankings.points
-                    : this.store.womensRankings.points}{' '}
-                  points
-                </Card>
-              </Col>
-              <Col span={8}>
-                <Card
-                  title={
-                    '2. ' + this.store.activeGender === 'mens'
-                      ? this.store.mensRankings.name
-                      : this.store.womensRankings.name
-                  }
-                  bordered={false}
-                >
-                  {this.store.activeGender === 'mens'
-                    ? this.store.mensRankings.points
-                    : this.store.womensRankings.points}{' '}
-                  points
-                </Card>
-              </Col>
-              <Col span={8}>
-                <Card
-                  title={
-                    '3. ' + this.store.activeGender === 'mens'
-                      ? this.store.mensRankings.name
-                      : this.store.womensRankings.name
-                  }
-                  bordered={false}
-                >
-                  {this.store.activeGender === 'mens'
-                    ? this.store.mensRankings.points
-                    : this.store.womensRankings.points}{' '}
-                  points
-                </Card>
-              </Col>
-            </Row>
-          </div>
           <TitleRow>
             <h1>All Predicted At Large Bids</h1>
           </TitleRow>
