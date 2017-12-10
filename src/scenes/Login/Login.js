@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { colors } from 'constants/styles';
 import LoginStore from './LoginStore';
 import UserStore from 'stores/UserStore';
-import banner from 'assets/banner.jpg';
+import banner from 'assets/Banner1.jpg';
 
 const FormItem = Form.Item;
 const store = new LoginStore();
@@ -40,7 +40,7 @@ class Login extends React.Component<Props> {
         <Banner justify="center" align="center" auto>
           <BannerImage src={banner} alt="banner" />
           <BannerTextContainer>
-            <BannerText>Welcome to AtLarge</BannerText>
+            <BannerText>Kolas Calculator</BannerText>
           </BannerTextContainer>
         </Banner>
         <LoginForm onSubmit={this.handleSubmit}>
@@ -96,7 +96,7 @@ const BannerImage = styled.img`
   flex-shrink: 0;
   min-width: 100%;
   min-height: 100%;
-  filter: blur(3px);
+  filter: blur(5px);
 `;
 
 const BannerTextContainer = styled(Flex)`
@@ -108,7 +108,9 @@ const BannerText = styled.h1`
   font-size: 5rem;
 `;
 
-const CreateAccountLink = styled.a`margin-left: 6px;`;
+const CreateAccountLink = styled.a`
+  margin-left: 6px;
+`;
 
 const LoginForm = styled(Form)`
   display: flex;
