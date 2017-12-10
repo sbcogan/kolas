@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { colors } from 'constants/styles';
 import LoginStore from './LoginStore';
 import UserStore from 'stores/UserStore';
-import banner from 'assets/Banner1.jpg';
+import banner from 'assets/banner.jpg';
 
 const FormItem = Form.Item;
 const store = new LoginStore();
@@ -40,7 +40,7 @@ class Login extends React.Component<Props> {
         <Banner justify="center" align="center" auto>
           <BannerImage src={banner} alt="banner" />
           <BannerTextContainer>
-            <BannerText>Kolas Calculator</BannerText>
+            <BannerText>Welcome to AtLarge</BannerText>
           </BannerTextContainer>
         </Banner>
         <LoginForm onSubmit={this.handleSubmit}>
