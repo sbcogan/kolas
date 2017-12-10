@@ -65,18 +65,48 @@ class Kolas extends React.Component<Props> {
           <div style={{ background: '#ECECEC', padding: '30px' }}>
             <Row gutter={16}>
               <Col span={8}>
-                <Card title={fakedata[0].name} bordered={false}>
-                  {fakedata[0].points}
+                <Card
+                  title={
+                    this.store.activeGender === 'mens'
+                      ? this.store.mensRankings.name
+                      : this.store.womensRankings.name
+                  }
+                  bordered={false}
+                >
+                  {this.store.activeGender === 'mens'
+                    ? this.store.mensRankings.points
+                    : this.store.womensRankings.points}{' '}
+                  points
                 </Card>
               </Col>
               <Col span={8}>
-                <Card title={fakedata[1].name} bordered={false}>
-                  {fakedata[1].points}
+                <Card
+                  title={
+                    this.store.activeGender === 'mens'
+                      ? this.store.mensRankings.name
+                      : this.store.womensRankings.name
+                  }
+                  bordered={false}
+                >
+                  {this.store.activeGender === 'mens'
+                    ? this.store.mensRankings.points
+                    : this.store.womensRankings.points}{' '}
+                  points
                 </Card>
               </Col>
               <Col span={8}>
-                <Card title={fakedata[2].name} bordered={false}>
-                  {fakedata[2].points}
+                <Card
+                  title={
+                    this.store.activeGender === 'mens'
+                      ? this.store.mensRankings.name
+                      : this.store.womensRankings.name
+                  }
+                  bordered={false}
+                >
+                  {this.store.activeGender === 'mens'
+                    ? this.store.mensRankings.points
+                    : this.store.womensRankings.points}{' '}
+                  points
                 </Card>
               </Col>
             </Row>
