@@ -1,32 +1,43 @@
-import { action, extendObservable } from 'mobx';
+import { action, observable } from 'mobx';
 
 class LoginStore {
+  @observable error: string;
+  @observable email: string = '';
+  @observable pass: string = '';
+
   @action
-  updateFields = (fields): void => {
-    let fieldsToUpdate = {};
-    for (let key in fields) {
-      if (!fields[key].errors) {
-        fieldsToUpdate[fields[key].name] = fields[key].value;
-      }
-    }
-    extendObservable(this, fieldsToUpdate);
+  changeEmail = (email: string): void => {
+    this.email = email;
+  };
+
+  @action
+  changePass = (pass: string): void => {
+    this.pass = pass;
   };
 
   @action
   loginUser = async (user: UserStore, history: RouterHistory): Promise<*> => {
+    if (this.email === '') {
+      this.error = 'Please enter your email';
+      return;
+    }
+    if (this.pass === '') {
+      this.error = 'Please enter your password';
+      return;
+    }
     try {
       const res = await user.login({
-        name: this.name,
         email: this.email,
-        password: this.password
+        password: this.pass
       });
       if (res.error) {
-        console.error(res.error);
+        this.error = res.error.message;
       } else {
+        this.error = null;
         history.push('/kolas');
       }
     } catch (err) {
-      console.error(err);
+      this.error = err.message;
     }
   };
 }

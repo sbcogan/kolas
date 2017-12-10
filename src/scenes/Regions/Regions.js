@@ -42,7 +42,7 @@ class Regions extends React.Component<Props> {
                 dataSource={this.store.regions}
                 columns={columns}
                 pagination={{
-                  defaultPageSize: 5
+                  defaultPageSize: 10
                 }}
               />}
         </Flex>
