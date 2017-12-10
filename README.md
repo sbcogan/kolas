@@ -1,5 +1,3 @@
 # Frontend Repo
 
-To get started, run `npm install` or `yarn`. Then run `npm start` or `yarn start` in the root of the project. This should open a web browser that will live reload when changes are made to the application. I'm using antd as the component framework, just to mix things up.
-
-TODO: Documentation about the stucture of the app.
+To get started, run `npm install` or `yarn`. Then run `npm start` or `yarn start` in the root of the project. This should open a web browser that will live reload when changes are made to the application. I'm using antd as the component framework, just to mix things up. To build the app (for production) you need to run `yarn build`, the rename the folder called 'build' to 'docs' so that github will serve it. the live version of the site can be found [here](https://316-power-squad.github.io/kolas/).

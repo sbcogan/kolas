@@ -2,21 +2,17 @@
 import * as React from 'react';
 import { Flex } from 'reflexbox';
 import { inject, observer } from 'mobx-react';
-import { Form, Icon, Input, Button } from 'antd';
+import { Alert, Icon, Button } from 'antd';
 import styled from 'styled-components';
 import { type RouterHistory } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { colors } from 'constants/styles';
 import UserStore from 'stores/UserStore';
 import SignUpStore from './SignUpStore';
+import Input from 'components/Input';
 import banner from 'assets/banner.jpg';
 
-const FormItem = Form.Item;
-// instantiate outside of component context because rc-form is sketch af
-const store = new SignUpStore();
-
 type Props = {
-  form: Object,
   user: UserStore,
   history: RouterHistory
 };
@@ -25,15 +21,17 @@ type Props = {
 class SignUp extends React.Component<Props> {
   store: SignUpStore;
 
+  constructor(props: Props) {
+    super(props);
+    this.store = new SignUpStore();
+  }
+
   handleSubmit = (e: Object) => {
     const { user, history } = this.props;
-    e.preventDefault();
-    e.stopPropagation();
-    store.signUpUser(user, history);
+    this.store.signUpUser(user, history);
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     return (
       <FullHeight auto justify="center">
         <Banner auto justify="center" align="center">
@@ -44,51 +42,53 @@ class SignUp extends React.Component<Props> {
         </Banner>
         <SignUpForm onSubmit={this.handleSubmit}>
           <UserIcon type="user-add" style={{ fontSize: 60 }} />
-          <FormItem>
-            {getFieldDecorator('name', {
-              rules: [{ required: true, message: 'Please input your name!' }]
-            })(
-              <Input
-                prefix={<Icon type="user" style={{ fontSize: 13 }} />}
-                placeholder="Name"
-              />
-            )}
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('email', {
-              rules: [{ required: true, message: 'Please input your email!' }]
-            })(
-              <Input
-                prefix={<Icon type="mail" style={{ fontSize: 13 }} />}
-                placeholder="Email"
-              />
-            )}
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('password', {
-              rules: [
-                { required: true, message: 'Please input your Password!' }
-              ]
-            })(
-              <Input
-                prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
-                type="password"
-                placeholder="Password"
-              />
-            )}
-          </FormItem>
-          <FormItem>
-            <Flex column>
-              <Button type="primary" htmlType="submit">
+          <Item>
+            <Input
+              value={this.store.name}
+              onChange={this.store.changeName}
+              placeholder="Name"
+              icon="user"
+            />
+          </Item>
+          <Item>
+            <Input
+              value={this.store.email}
+              onChange={this.store.changeEmail}
+              placeholder="Email"
+              icon="mail"
+            />
+          </Item>
+          <Item>
+            <Input
+              value={this.store.password}
+              onChange={this.store.changePassword}
+              type="password"
+              placeholder="Password"
+              icon="lock"
+            />
+          </Item>
+          {this.store.error &&
+            <StyledAlert message={this.store.error} type="error" />}
+          <Item>
+            <Flex auto column>
+              <Button type="primary" onClick={this.handleSubmit}>
                 Register
               </Button>
             </Flex>
-          </FormItem>
+          </Item>
         </SignUpForm>
       </FullHeight>
     );
   }
 }
+
+const StyledAlert = styled(Alert)`
+  margin: 0 10px;
+`;
+
+const Item = styled(Flex)`
+  margin: 10px;
+`;
 
 const UserIcon = styled(Icon)`
   margin-bottom: 30px;
@@ -111,12 +111,13 @@ const BannerText = styled.h1`
   font-size: 5rem;
 `;
 
-const SignUpForm = styled(Form)`
+const SignUpForm = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 25px;
-  min-width: 300px;
+  width: 300px;
+  text-align: center;
 `;
 
 const FullHeight = styled(Flex)`
@@ -128,12 +129,4 @@ const Banner = styled(Flex)`
 `;
 
 export { SignUp };
-export default inject('user')(
-  withRouter(
-    Form.create({
-      onFieldsChange: (_, fields) => {
-        store.updateFields(fields);
-      }
-    })(SignUp)
-  )
-);
+export default inject('user')(withRouter(SignUp));

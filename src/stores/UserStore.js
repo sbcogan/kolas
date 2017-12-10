@@ -59,7 +59,7 @@ class UserStore {
     this.loggedIn = false;
     this.name = '';
     this.email = '';
-    window.location = '/login';
+    window.location = '/kolas/#login';
   };
 }
 
