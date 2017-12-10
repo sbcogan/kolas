@@ -63,15 +63,6 @@ class Meets extends React.Component<Props> {
               component={() => <MeetDetail meets={this.store.activeMeet} />}
             />
           </InputRow>
-          <FlexTable
-            bordered
-            title={() => 'Meets'}
-            dataSource={this.store.meets}
-            columns={columns}
-            pagination={{
-              defaultPageSize: 10
-            }}
-          />
         </Flex>
       </Layout>
     );
