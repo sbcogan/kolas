@@ -1,14 +1,18 @@
 // @flow
 import React from 'react';
 import Layout from 'components/Layout';
+import { Route, withRouter } from 'react-router';
 import { Flex } from 'reflexbox';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { Spin } from 'antd';
 import styled from 'styled-components';
 import TeamsStore from './TeamsStore';
+import TeamDetail from './components/TeamDetail';
 
-type Props = {};
+type Props = {
+  location: Object
+};
 
 type TeamListItemProps = {
   team: {
@@ -44,15 +48,32 @@ class Teams extends React.Component<Props> {
   }
 
   render() {
+    const { location } = this.props;
+    const hasId = /teams\/[0-9]*/.test(location.pathname);
+    if (hasId) {
+      this.store.setActiveMeet(
+        parseInt(/teams\/([0-9])*/.exec(location.pathname)[1], 10)
+      );
+    }
     return (
-      <Layout>
+      <Layout
+        subheader={
+          hasId
+            ? <span>
+                {this.store.activeMeet.name || ''}
+              </span>
+            : undefined
+        }
+      >
         <Flex column auto>
           {this.store.loading
             ? <Spin />
             : <Flex column m={3}>
-                {this.store.teams.map((team, i) =>
-                  <TeamListItem team={team} key={i} />
-                )}
+                {!hasId &&
+                  this.store.teams.map((team, i) =>
+                    <TeamListItem team={team} key={i} />
+                  )}
+                <Route path="/teams/:id" component={() => <TeamDetail />} />
               </Flex>}
         </Flex>
       </Layout>
@@ -65,11 +86,11 @@ const TeamItem = styled(Flex)`
   border-radius: 2px;
   padding: 10px;
   margin-bottom: 10px;
-  cursor: pointer
+  cursor: pointer;
   &:hover {
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
     border-color: transparent;
   } 
 `;
 
-export default Teams;
+export default withRouter(Teams);

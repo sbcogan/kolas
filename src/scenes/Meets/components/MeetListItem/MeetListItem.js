@@ -18,6 +18,11 @@ const MeetListItem = ({ meet, className }: Props) => {
           {meet.name}
         </Link>
       }
+      extra={
+        <span>
+          {meet.date}
+        </span>
+      }
     />
   );
 };

@@ -6,6 +6,8 @@ import registerServiceWorker from './registerServiceWorker';
 import StoreProvider, { user } from 'stores';
 import { LocaleProvider } from 'antd';
 import enUS from 'antd/lib/locale-provider/en_US';
+import styled from 'styled-components';
+import { Flex } from 'reflexbox';
 
 // routes
 import Kolas from 'scenes/Kolas';
@@ -24,11 +26,13 @@ const requireAuth = (nextState, replace) => {
   }
 };
 
+const SiteWrapper = styled.div`min-height: 100vh;`;
+
 ReactDOM.render(
   <LocaleProvider locale={enUS}>
     <StoreProvider>
       <Router>
-        <div>
+        <SiteWrapper>
           <Redirect from="/" exact to="/login" />
           <Route path="/kolas" component={Kolas} onEnter={requireAuth} />
           <Route path="/regions" component={Regions} onEnter={requireAuth} />
@@ -36,7 +40,7 @@ ReactDOM.render(
           <Route path="/meets" component={Meets} onEnter={requireAuth} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={SignUp} />
-        </div>
+        </SiteWrapper>
       </Router>
     </StoreProvider>
   </LocaleProvider>,
