@@ -14,7 +14,7 @@ type Props = {
 const Layout = ({ children, subheader, className }: Props) =>
   <Background column>
     <Header subheader={subheader} />
-    <Flex justify="center" className={className}>
+    <Flex justify="center" auto className={className}>
       {children}
     </Flex>
     <Footer />
@@ -22,6 +22,7 @@ const Layout = ({ children, subheader, className }: Props) =>
 
 const Background = styled(Flex)`
   background: #f7f7f7;
+  min-height: 100vh;
 `;
 
 export { Layout };
