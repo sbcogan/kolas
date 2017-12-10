@@ -10,8 +10,7 @@ import TeamsStore from './TeamsStore';
 import TeamDetail from './components/TeamDetail';
 
 type Props = {
-  location: Object,
-  match: Object
+  location: Object
 };
 
 const columns = [
@@ -41,8 +40,7 @@ class Teams extends React.Component<Props> {
   }
 
   render() {
-    const { location, match } = this.props;
-    console.log(match.params);
+    const { location } = this.props;
     const hasId = /teams\/[0-9]*/.test(location.pathname);
     if (hasId) {
       this.store.setActiveMeet(
@@ -70,10 +68,10 @@ class Teams extends React.Component<Props> {
                     dataSource={this.store.teams}
                     columns={columns}
                     pagination={{
-                      defaultPageSize: 5
+                      defaultPageSize: 10
                     }}
                   />}
-                <Route path="/meets/:id" component={() => <TeamDetail />} />
+                <Route path="/teams/:id" component={() => <TeamDetail />} />
               </div>}
         </Flex>
       </Layout>
