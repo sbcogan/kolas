@@ -6,6 +6,7 @@ import { Flex } from 'reflexbox';
 import { Table, Button, Input, Select } from 'antd';
 import Layout from 'components/Layout';
 import styled from 'styled-components';
+import { VictoryChart, VictoryBar } from 'victory';
 
 const Option = Select.Option;
 
@@ -22,6 +23,13 @@ const columns = [
     dataIndex: 'points',
     key: 'points'
   }
+];
+
+const data = [
+  { name: 1, points: 13000 },
+  { name: 2, points: 16500 },
+  { name: 3, points: 14250 },
+  { name: 4, points: 19000 }
 ];
 
 @observer
@@ -43,6 +51,16 @@ class Kolas extends React.Component<Props> {
     return (
       <Layout>
         <Flex column auto>
+          <VictoryChart>
+            <VictoryBar
+              data={data}
+              // data accessor for x values
+              x="name"
+              // data accessor for y values
+              y="points"
+              width="300px"
+            />
+          </VictoryChart>
           <InputRow>
             <PaddedInput size="large" placeholder="filter teams" />
             <PaddedSelect
