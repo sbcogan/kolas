@@ -4,73 +4,75 @@ import { Flex } from 'reflexbox';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import { type RouterHistory } from 'react-router-dom';
-import { Form, Icon, Input, Button } from 'antd';
+import { Alert, Icon, Button } from 'antd';
 import styled from 'styled-components';
 import { colors } from 'constants/styles';
 import LoginStore from './LoginStore';
 import UserStore from 'stores/UserStore';
+import UiStore from 'stores/UiStore';
 import banner from 'assets/banner.jpg';
-
-const FormItem = Form.Item;
-const store = new LoginStore();
+import Input from 'components/Input';
 
 type Props = {
   history: RouterHistory,
-  form: Object,
-  user: UserStore
+  user: UserStore,
+  ui: UiStore
 };
 
 @observer
 class Login extends React.Component<Props> {
+  store: LoginStore;
+
+  constructor(props: Props) {
+    super(props);
+    this.store = new LoginStore();
+  }
+
   signUp = () => {
     this.props.history.push('/signup');
   };
 
-  handleSubmit = (e: Object) => {
+  handleSubmit = () => {
     const { user, history } = this.props;
-    e.preventDefault();
-    e.stopPropagation();
-    store.loginUser(user, history);
+    this.store.loginUser(user, history);
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { ui } = this.props;
     return (
       <FullHeight auto justify="center">
-        <Banner justify="center" align="center" auto>
-          <BannerImage src={banner} alt="banner" />
-          <BannerTextContainer>
-            <BannerText>Welcome to AtLarge</BannerText>
-          </BannerTextContainer>
-        </Banner>
-        <LoginForm onSubmit={this.handleSubmit}>
-          <UserIcon type="user" style={{ fontSize: 60 }} />
-          <FormItem>
-            {getFieldDecorator('email', {
-              rules: [{ required: true, message: 'Please input your email!' }]
-            })(
-              <Input
-                prefix={<Icon type="mail" style={{ fontSize: 13 }} />}
-                placeholder="Email"
-              />
-            )}
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('password', {
-              rules: [
-                { required: true, message: 'Please input your Password!' }
-              ]
-            })(
-              <Input
-                prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
-                type="password"
-                placeholder="Password"
-              />
-            )}
-          </FormItem>
-          <FormItem>
-            <Flex column>
-              <Button type="primary" htmlType="submit">
+        {ui.isDesktop &&
+          <Banner justify="center" align="center" auto>
+            <BannerImage src={banner} alt="banner" />
+            <BannerTextContainer>
+              <BannerText>Welcome to AtLarge</BannerText>
+            </BannerTextContainer>
+          </Banner>}
+        <LoginForm>
+          <Item column>
+            <UserIcon type="user" style={{ fontSize: 60 }} />
+            <Input
+              type="text"
+              placeholder="Email"
+              value={this.store.email}
+              onChange={this.store.changeEmail}
+              icon="mail"
+            />
+          </Item>
+          <Item>
+            <Input
+              type="password"
+              placeholder="Password"
+              value={this.store.password}
+              onChange={this.store.changePass}
+              icon="lock"
+            />
+          </Item>
+          {this.store.error &&
+            <StyledAlert message={this.store.error} type="error" />}
+          <Item>
+            <Flex column auto>
+              <Button type="primary" onClick={this.handleSubmit}>
                 Log In
               </Button>
               <Flex>
@@ -80,12 +82,20 @@ class Login extends React.Component<Props> {
                 </CreateAccountLink>
               </Flex>
             </Flex>
-          </FormItem>
+          </Item>
         </LoginForm>
       </FullHeight>
     );
   }
 }
+
+const StyledAlert = styled(Alert)`
+  margin: 0 10px;
+`;
+
+const Item = styled(Flex)`
+  margin: 10px;
+`;
 
 const UserIcon = styled(Icon)`
   margin-bottom: 30px;
@@ -110,12 +120,13 @@ const BannerText = styled.h1`
 
 const CreateAccountLink = styled.a`margin-left: 6px;`;
 
-const LoginForm = styled(Form)`
+const LoginForm = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 25px;
-  min-width: 300px;
+  width: 300px;
+  text-align: center;
 `;
 
 const FullHeight = styled(Flex)`
@@ -129,12 +140,4 @@ const Banner = styled(Flex)`
 `;
 
 export { Login };
-export default inject('user')(
-  withRouter(
-    Form.create({
-      onFieldsChange: (_, fields) => {
-        store.updateFields(fields);
-      }
-    })(Login)
-  )
-);
+export default inject('user', 'ui')(withRouter(Login));

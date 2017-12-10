@@ -1,21 +1,42 @@
-import { action, extendObservable } from 'mobx';
+import { action, observable } from 'mobx';
 import { type RouterHistory } from 'react-router-dom';
 import UserStore from 'stores/UserStore';
 
 class SignUpStore {
+  @observable error: string;
+  @observable name: string = '';
+  @observable email: string = '';
+  @observable password: string = '';
+
   @action
-  updateFields = (fields): void => {
-    let fieldsToUpdate = {};
-    for (let key in fields) {
-      if (!fields[key].errors) {
-        fieldsToUpdate[fields[key].name] = fields[key].value;
-      }
-    }
-    extendObservable(this, fieldsToUpdate);
+  changeName = (name: string): void => {
+    this.name = name;
+  };
+
+  @action
+  changeEmail = (email: string): void => {
+    this.email = email;
+  };
+
+  @action
+  changePassword = (password: string): void => {
+    this.password = password;
   };
 
   @action
   signUpUser = async (user: UserStore, history: RouterHistory): Promise<*> => {
+    if (this.name === '') {
+      this.error = 'Please enter your name';
+      return;
+    }
+    if (this.email === '') {
+      this.error = 'Please enter your email';
+      return;
+    }
+    if (this.password === '') {
+      this.error = 'Please enter your password';
+      return;
+    }
     try {
       await user.signUp({
         name: this.name,
@@ -27,12 +48,12 @@ class SignUpStore {
         password: this.password
       });
       if (res.error) {
-        console.error(res.error);
+        this.error = res.error.message;
       } else {
         history.push('/kolas');
       }
     } catch (err) {
-      console.error(err);
+      this.error = err.message;
     }
   };
 }

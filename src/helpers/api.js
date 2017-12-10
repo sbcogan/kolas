@@ -3,8 +3,8 @@
  * API specific things
  */
 
-const baseUrl = 'https://kolas.herokuapp.com';
-// const baseUrl = 'http://localhost:5000';
+// const baseUrl = 'https://kolas.herokuapp.com';
+const baseUrl = 'http://localhost:5000';
 
 // https://stackoverflow.com/questions/111529/how-to-create-query-parameters-in-javascript
 const encodeUrl = (url, params) => {
