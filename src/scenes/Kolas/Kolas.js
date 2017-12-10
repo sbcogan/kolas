@@ -3,7 +3,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import KolasStore from './KolasStore';
 import { Flex } from 'reflexbox';
-import { Table, Button, Input, Select } from 'antd';
+import { Table, Button, Input, Select, Card, Row, Col } from 'antd';
 import Layout from 'components/Layout';
 import styled from 'styled-components';
 import { VictoryChart, VictoryBar } from 'victory';
@@ -25,11 +25,19 @@ const columns = [
   }
 ];
 
-const data = [
-  { name: 1, points: 13000 },
-  { name: 2, points: 16500 },
-  { name: 3, points: 14250 },
-  { name: 4, points: 19000 }
+const fakedata = [
+  {
+    name: 'First Team',
+    points: 13000
+  },
+  {
+    name: 'Second Team',
+    points: 16500
+  },
+  {
+    name: 'Third Team',
+    points: 14250
+  }
 ];
 
 @observer
@@ -51,18 +59,33 @@ class Kolas extends React.Component<Props> {
     return (
       <Layout>
         <Flex column auto>
-          <VictoryChart>
-            <VictoryBar
-              data={data}
-              // data accessor for x values
-              x="name"
-              // data accessor for y values
-              y="points"
-              width="300px"
-            />
-          </VictoryChart>
+          <TitleRow>
+            <h1>Top Three At Large Bids</h1>
+          </TitleRow>
+          <div style={{ background: '#ECECEC', padding: '30px' }}>
+            <Row gutter={16}>
+              <Col span={8}>
+                <Card title={fakedata[0].name} bordered={false}>
+                  {fakedata[0].points}
+                </Card>
+              </Col>
+              <Col span={8}>
+                <Card title={fakedata[1].name} bordered={false}>
+                  {fakedata[1].points}
+                </Card>
+              </Col>
+              <Col span={8}>
+                <Card title={fakedata[2].name} bordered={false}>
+                  {fakedata[2].points}
+                </Card>
+              </Col>
+            </Row>
+          </div>
+          <TitleRow>
+            <h1>All Predicted At Large Bids</h1>
+          </TitleRow>
           <InputRow>
-            <PaddedInput size="large" placeholder="filter teams" />
+            <PaddedInput size="large" placeholder="Filter Teams" />
             <PaddedSelect
               defaultValue="all"
               size="large"
@@ -121,6 +144,10 @@ const PaddedInput = styled(Input)`
 const InputRow = styled(Flex)`
   margin: 30px;
   margin-bottom: 10px;
+`;
+
+const TitleRow = styled(Flex)`
+  margin: 30px;
 `;
 
 const FlexTable = styled(Table)`
