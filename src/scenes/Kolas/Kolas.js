@@ -77,6 +77,37 @@ class Kolas extends React.Component<Props> {
           <TitleRow>
             <h1>Predicted Rankings</h1>
           </TitleRow>
+          <div style={{ background: '#ECECEC', padding: '30px' }}>
+            <Row gutter={16}>
+              <Col span={8}>
+                <Card
+                  title="Teams in the Championship"
+                  bordered={false}
+                  style={{ 'text-align': 'center' }}
+                >
+                  <h1>31</h1>
+                </Card>
+              </Col>
+              <Col span={8}>
+                <Card
+                  title="Auto Teams"
+                  bordered={false}
+                  style={{ 'text-align': 'center' }}
+                >
+                  <h1>18</h1>
+                </Card>
+              </Col>
+              <Col span={8}>
+                <Card
+                  title="At Large Teams"
+                  bordered={false}
+                  style={{ 'text-align': 'center' }}
+                >
+                  <h1>13</h1>
+                </Card>
+              </Col>
+            </Row>
+          </div>
           <FlexTable
             bordered
             title={() => 'Predicted at Large Bids'}
