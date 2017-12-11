@@ -5,7 +5,7 @@ import { Route, withRouter } from 'react-router';
 import { Flex } from 'reflexbox';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { Spin } from 'antd';
+import { Input, Spin } from 'antd';
 import styled from 'styled-components';
 import TeamsStore from './TeamsStore';
 import TeamDetail from './components/TeamDetail';
@@ -51,8 +51,8 @@ class Teams extends React.Component<Props> {
     const { location } = this.props;
     const hasId = /teams\/[0-9]*/.test(location.pathname);
     if (hasId) {
-      this.store.setActiveMeet(
-        parseInt(/teams\/([0-9])*/.exec(location.pathname)[1], 10)
+      this.store.setActiveTeam(
+        parseInt(/teams\/([0-9]+)*/.exec(location.pathname)[1], 10)
       );
     }
     return (
@@ -60,7 +60,7 @@ class Teams extends React.Component<Props> {
         subheader={
           hasId
             ? <span>
-                {this.store.activeMeet.name || ''}
+                {this.store.activeTeam.name || ''}
               </span>
             : undefined
         }
@@ -70,9 +70,16 @@ class Teams extends React.Component<Props> {
             ? <Spin />
             : <Flex column m={3}>
                 {!hasId &&
-                  this.store.teams.map((team, i) =>
-                    <TeamListItem team={team} key={i} />
-                  )}
+                  <Flex column>
+                    <PaddedSearch
+                      size="large"
+                      placeholder="Search for a Team"
+                      onSearch={this.store.changeQueryString}
+                    />
+                    {this.store.visibleTeams.map((team, i) =>
+                      <TeamListItem team={team} key={i} />
+                    )}
+                  </Flex>}
                 <Route path="/teams/:id" component={() => <TeamDetail />} />
               </Flex>}
         </Flex>
@@ -80,6 +87,10 @@ class Teams extends React.Component<Props> {
     );
   }
 }
+
+const PaddedSearch = styled(Input.Search)`
+  margin-bottom: 15px;
+`;
 
 const TeamItem = styled(Flex)`
   background: #fff;

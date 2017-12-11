@@ -3,19 +3,12 @@ import React from 'react';
 import Layout from 'components/Layout';
 import styled from 'styled-components';
 import { observer } from 'mobx-react';
-import { Flex } from 'reflexbox';
-import { Table, Spin } from 'antd';
+import { Flex, Box } from 'reflexbox';
+import { Spin } from 'antd';
 import RegionsStore from './RegionsStore';
+import RegionCard from './components/RegionCard';
 
 type Props = {};
-
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name'
-  }
-];
 
 @observer
 class Regions extends React.Component<Props> {
@@ -33,29 +26,18 @@ class Regions extends React.Component<Props> {
   render() {
     return (
       <Layout>
-        <Flex column auto>
+        <Flex auto m={3} wrap>
           {this.store.loading
             ? <Spin />
-            : <FlexTable
-                bordered
-                title={() => 'Teams'}
-                dataSource={this.store.regions}
-                columns={columns}
-                pagination={{
-                  defaultPageSize: 10
-                }}
-              />}
+            : this.store.regions.map((region, i) =>
+                <Box w={[1, 1 / 2, 1 / 4]} p={1}>
+                  <RegionCard region={region} key={i} />
+                </Box>
+              )}
         </Flex>
       </Layout>
     );
   }
 }
-
-const FlexTable = styled(Table)`
-  margin: 30px;
-  .ant-table {
-    background: #fff;
-  }
-`;
 
 export default Regions;

@@ -1,28 +1,16 @@
 // @flow
 import { observable, action } from 'mobx';
-import { getRequest } from 'helpers/api';
 
 type Gender = 'mens' | 'womens';
 
 class KolasStore {
-  @observable mensRankings: Array<Object> = [];
-  @observable womensRankings: Array<Object> = [];
   @observable activeGender: Gender = 'mens';
+  @observable activeGender: Gender = 'mens';
+  @observable queryString: string = '';
 
   @action
-  getRankings = async (): Promise<*> => {
-    try {
-      const res = await getRequest(`/api/rankings/${this.activeGender}`, {});
-      if (res.data) {
-        if (this.activeGender === 'mens') {
-          this.mensRankings = res.data;
-        } else {
-          this.womensRankings = res.data;
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  changeQuery = (query: string) => {
+    this.queryString = query;
   };
 
   @action changeGender = (gender: Gender) => (this.activeGender = gender);

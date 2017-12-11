@@ -48,7 +48,7 @@ class Login extends React.Component<Props> {
               <BannerText>Welcome to AtLarge</BannerText>
             </BannerTextContainer>
           </Banner>}
-        <LoginForm>
+        <LoginForm mobile={!ui.isDesktop}>
           <Item column>
             <UserIcon type="user" style={{ fontSize: 60 }} />
             <Input
@@ -75,12 +75,12 @@ class Login extends React.Component<Props> {
               <Button type="primary" onClick={this.handleSubmit}>
                 Log In
               </Button>
-              <Flex>
+              <CreateAccountContainer>
                 New to us?
                 <CreateAccountLink onClick={this.signUp}>
                   Create an account
                 </CreateAccountLink>
-              </Flex>
+              </CreateAccountContainer>
             </Flex>
           </Item>
         </LoginForm>
@@ -88,6 +88,10 @@ class Login extends React.Component<Props> {
     );
   }
 }
+
+const CreateAccountContainer = styled(Flex)`
+  margin-top: 7px;
+`;
 
 const StyledAlert = styled(Alert)`
   margin: 0 10px;
@@ -127,6 +131,7 @@ const LoginForm = styled.div`
   padding: 25px;
   width: 300px;
   text-align: center;
+  ${({ mobile }) => mobile && ``};
 `;
 
 const FullHeight = styled(Flex)`

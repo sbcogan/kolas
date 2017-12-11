@@ -3,17 +3,28 @@ import { observable, computed, action } from 'mobx';
 import { getRequest } from 'helpers/api';
 
 class TeamsStore {
+  @observable queryString: string = '';
   @observable teams: Object[] = [];
   @observable activeTeamId: number;
   @observable loading: boolean = true;
 
   @computed
-  get activeMeet(): Object {
+  get activeTeam(): Object {
     return this.teams.find(team => team.ID === this.activeTeamId) || {};
   }
 
+  @computed
+  get visibleTeams(): Array<Object> {
+    return this.teams.filter(team => team.name.includes(this.queryString));
+  }
+
   @action
-  setActiveMeet = (id: number): void => {
+  changeQueryString = (query: string) => {
+    this.queryString = query;
+  };
+
+  @action
+  setActiveTeam = (id: number): void => {
     this.activeTeamId = id;
   };
 
