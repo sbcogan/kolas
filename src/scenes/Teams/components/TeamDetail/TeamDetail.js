@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { Flex } from 'reflexbox';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router';
+import QualificationStore from 'stores/QualificationStore';
 import TeamDetailStore from './TeamDetailStore';
 import { Link } from 'react-router-dom';
+import { Alert } from 'antd';
 import styled from 'styled-components';
 
 type Props = {
-  match: Object
+  match: Object,
+  qual: QualificationStore
 };
 
 type MeetListItemProps = {
@@ -28,12 +31,33 @@ const MeetListItem = ({ meet: { meet, meet_id } }: MeetListItemProps) =>
 class TeamDetail extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    const { match: { params: { id } } } = props;
-    this.store = new TeamDetailStore({ id });
+    const { qual, match: { params: { id } } } = props;
+    this.store = new TeamDetailStore({ id, qual });
   }
 
   componentDidMount() {
     this.store.getTeam();
+  }
+
+  get qualified(): boolean {
+    const { qual } = this.props;
+    if (
+      this.store.loading ||
+      !qual ||
+      !qual.mensRankings ||
+      !qual.womensRankings ||
+      qual.loading
+    )
+      return false;
+    if (this.store.team.gender === 'mens') {
+      return qual.mensRankings
+        .map(team => team.name)
+        .includes(this.store.team.name);
+    } else {
+      return qual.womensRankings
+        .map(team => team.name)
+        .includes(this.store.team.name);
+    }
   }
 
   render() {
@@ -41,20 +65,29 @@ class TeamDetail extends React.Component<Props> {
       return null;
     }
     return (
-      <Flex auto>
-        <Flex auto column>
-          <MeetsHeader>Recent Meets</MeetsHeader>
-          <Flex column>
-            {this.store.team.map((meet, i) =>
-              <MeetListItem key={i} meet={meet} />
-            )}
-          </Flex>
+      <Flex auto column>
+        <MeetsHeader>Qualification for Nationals</MeetsHeader>
+        <StyledAlert
+          message={`Based on their record this team will most likely ${this
+            .qualified
+            ? ''
+            : 'not'} qualify for nationals`}
+          type={this.qualified ? 'success' : 'error'}
+        />
+        <MeetsHeader>Recent Meets</MeetsHeader>
+        <Flex column>
+          {this.store.recentMeets.map((meet, i) =>
+            <MeetListItem key={i} meet={meet} />
+          )}
         </Flex>
-        <Flex auto>testing</Flex>
       </Flex>
     );
   }
 }
+
+const StyledAlert = styled(Alert)`
+  margin-bottom: 10px;
+`;
 
 const MeetsHeader = styled.h3`margin-bottom: 10px;`;
 
@@ -70,4 +103,4 @@ const MeetItem = styled(Flex)`
   } 
 `;
 
-export default withRouter(TeamDetail);
+export default withRouter(inject('qual')(TeamDetail));

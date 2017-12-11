@@ -42,7 +42,7 @@ class Meets extends React.Component<Props> {
             : undefined
         }
       >
-        {!hasId && <MeetListView meets={this.store.meets} />}
+        {!hasId && <MeetListView store={this.store} />}
         <Route
           path="/meets/:id"
           component={() => <MeetDetail meets={this.store.activeMeet} />}

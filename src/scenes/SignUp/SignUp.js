@@ -8,12 +8,14 @@ import { type RouterHistory } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { colors } from 'constants/styles';
 import UserStore from 'stores/UserStore';
+import UiStore from 'stores/UiStore';
 import SignUpStore from './SignUpStore';
 import Input from 'components/Input';
 import banner from 'assets/banner.jpg';
 
 type Props = {
   user: UserStore,
+  ui: UiStore,
   history: RouterHistory
 };
 
@@ -32,15 +34,17 @@ class SignUp extends React.Component<Props> {
   };
 
   render() {
+    const { ui } = this.props;
     return (
       <FullHeight auto justify="center">
-        <Banner auto justify="center" align="center">
-          <BannerImage src={banner} alt="banner" />
-          <BannerTextContainer>
-            <BannerText>Welcome to AtLarge</BannerText>
-          </BannerTextContainer>
-        </Banner>
-        <SignUpForm onSubmit={this.handleSubmit}>
+        {ui.isDesktop &&
+          <Banner auto justify="center" align="center">
+            <BannerImage src={banner} alt="banner" />
+            <BannerTextContainer>
+              <BannerText>Welcome to AtLarge</BannerText>
+            </BannerTextContainer>
+          </Banner>}
+        <SignUpForm mobile={!ui.isDesktop}>
           <UserIcon type="user-add" style={{ fontSize: 60 }} />
           <Item>
             <Input
@@ -118,6 +122,10 @@ const SignUpForm = styled.div`
   padding: 25px;
   width: 300px;
   text-align: center;
+  ${({ mobile }) =>
+    mobile &&
+    `
+  `};
 `;
 
 const FullHeight = styled(Flex)`
@@ -129,4 +137,4 @@ const Banner = styled(Flex)`
 `;
 
 export { SignUp };
-export default inject('user')(withRouter(SignUp));
+export default inject('user', 'ui')(withRouter(SignUp));

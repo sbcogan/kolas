@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card } from 'antd';
 import styled from 'styled-components';
+import { Flex } from 'reflexbox';
 
 type Props = {
   meet: Object,
@@ -11,24 +11,29 @@ type Props = {
 
 const MeetListItem = ({ meet, className }: Props) => {
   return (
-    <FlexCard
-      className={className}
-      title={
-        <Link to={`/meets/${meet.ID}`}>
+    <Link to={`/meets/${meet.ID}`}>
+      <MeetItem justify="space-between">
+        <Flex>
           {meet.name}
-        </Link>
-      }
-      extra={
-        <span>
+        </Flex>
+        <Flex>
           {meet.date}
-        </span>
-      }
-    />
+        </Flex>
+      </MeetItem>
+    </Link>
   );
 };
 
-const FlexCard = styled(Card)`
-  flex: 1 1 auto;
+const MeetItem = styled(Flex)`
+  background: #fff;
+  border-radius: 2px;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+    border-color: transparent;
+  } 
 `;
 
 export default MeetListItem;

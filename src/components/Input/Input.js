@@ -21,7 +21,7 @@ class Input extends React.Component<Props> {
           <span className="ant-input-prefix">
             <Icon type={icon} style={{ fontSize: 13 }} />
           </span>}
-        <input
+        <StyledInput
           {...other}
           value={value}
           onChange={this.handleChange}
@@ -31,5 +31,7 @@ class Input extends React.Component<Props> {
     );
   }
 }
+
+const StyledInput = styled.input`padding: 15px 25px !important;`;
 
 export default Input;

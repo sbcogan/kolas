@@ -61,6 +61,14 @@ class UserStore {
     this.email = '';
     window.location = '/kolas/#login';
   };
+
+  constructor() {
+    const token = sessionStorage.getItem('jwtToken');
+    console.log(token);
+    if (token) {
+      this.loggedIn = true;
+    }
+  }
 }
 
 export default UserStore;

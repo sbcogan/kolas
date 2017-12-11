@@ -1,15 +1,18 @@
 // @flow
 import * as React from 'react';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import KolasStore from './KolasStore';
 import { Flex } from 'reflexbox';
-import { Table, Button, Input, Select } from 'antd';
+import { Table, Input, Select } from 'antd';
+import QualificationStore from 'stores/QualificationStore';
 import Layout from 'components/Layout';
 import styled from 'styled-components';
 
 const Option = Select.Option;
 
-type Props = {};
+type Props = {
+  qual: QualificationStore
+};
 
 const columns = [
   {
@@ -34,28 +37,35 @@ class Kolas extends React.Component<Props> {
   }
 
   componentDidMount() {
-    this.store.getRankings();
+    this.getRankingsForGender();
   }
 
   handleGenderChange = () => {};
+
+  get visibleTeams(): Array<Object> {
+    const data =
+      this.store.activeGender === 'mens'
+        ? this.props.qual.mensRankings
+        : this.props.qual.womensRankings;
+    return this.store.queryString === ''
+      ? data
+      : data.filter(team => team.name.includes(this.store.queryString));
+  }
+
+  getRankingsForGender = () => {
+    this.props.qual.getRankings(this.store.activeGender);
+  };
 
   render() {
     return (
       <Layout>
         <Flex column auto>
           <InputRow>
-            <PaddedInput size="large" placeholder="filter teams" />
-            <PaddedSelect
-              defaultValue="all"
+            <PaddedSearch
               size="large"
-              stylelucy={{ width: 120 }}
-              onChange={this.handleGenderChange}
-            >
-              <Option value="all">All Divisions</Option>
-              <Option value="northeast">Northeast</Option>
-              <Option value="midatlantic">Midatlantic</Option>
-              <Option value="south">South</Option>
-            </PaddedSelect>
+              placeholder="filter teams"
+              onSearch={this.store.changeQuery}
+            />
             <PaddedSelect
               defaultValue="mens"
               size="large"
@@ -65,22 +75,11 @@ class Kolas extends React.Component<Props> {
               <Option value="mens">Men's</Option>
               <Option value="womens">Women's</Option>
             </PaddedSelect>
-            <Button
-              type="primary"
-              size="large"
-              onClick={this.store.getRankings}
-            >
-              Predict Bids
-            </Button>
           </InputRow>
           <FlexTable
             bordered
             title={() => 'Predicted at Large Bids'}
-            dataSource={
-              this.store.activeGender === 'mens'
-                ? this.store.mensRankings
-                : this.store.womensRankings
-            }
+            dataSource={this.visibleTeams}
             columns={columns}
             pagination={{
               defaultPageSize: 10
@@ -96,7 +95,7 @@ const PaddedSelect = styled(Select)`
   margin-right: 10px;
 `;
 
-const PaddedInput = styled(Input)`
+const PaddedSearch = styled(Input.Search)`
   margin-right: 10px;
 `;
 
@@ -114,4 +113,4 @@ const FlexTable = styled(Table)`
 `;
 
 export { Kolas };
-export default Kolas;
+export default inject('qual')(Kolas);
