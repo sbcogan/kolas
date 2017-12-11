@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Table, Tabs } from 'antd';
+import { Table, Tabs, Card } from 'antd';
 import { Flex, Box } from 'reflexbox';
 import { observer } from 'mobx-react';
 import { withRouter } from 'react-router';
@@ -30,13 +30,6 @@ const columns = [
     dataIndex: 'placement',
     key: 'placement'
   }
-];
-
-const fakedata = [
-  { quarter: 1, earnings: 13000 },
-  { quarter: 2, earnings: 16500 },
-  { quarter: 3, earnings: 14250 },
-  { quarter: 4, earnings: 19000 }
 ];
 
 @observer
@@ -93,19 +86,7 @@ class MeetDetail extends React.Component<Props> {
         <Box w={[1, 3 / 4, 3 / 4]}>{this.renderMeetContent()}</Box>
         <Box w={[1, 1 / 4, 1 / 4]}>
           <AddOrInfo auto align="center" justify="center">
-            {}
-            <VictoryChart domainPadding={20}>
-              <VictoryAxis
-              //tickValues={[1, 2, 3, 4]}
-              //tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
-              />
-              <VictoryAxis
-                dependentAxis
-                // tickFormat specifies how ticks should be displayed
-                //tickFormat={(x) => (`$${x / 1000}k`)}
-              />
-              <VictoryBar data={this.store.meet} x="team" y="placement" />
-            </VictoryChart>
+            <h1>Think of a visual that would make more sense here!</h1>
           </AddOrInfo>
         </Box>
       </Flex>
@@ -123,7 +104,7 @@ const AddOrInfo = styled(Flex)`
   margin: 30px 30px 30px 0;
   height: 85%;
   background: #fff;
-  border: 1px solid gray;
+  border: 1px solid lightgray;
   border-radius: 4px;
   font-size: 20px;
 `;

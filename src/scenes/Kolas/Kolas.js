@@ -110,7 +110,7 @@ class Kolas extends React.Component<Props> {
           </div>
           <FlexTable
             bordered
-            title={() => 'Predicted at Large Bids'}
+            title={() => 'Predicted Bids'}
             dataSource={
               this.store.activeGender === 'mens'
                 ? this.store.mensRankings
