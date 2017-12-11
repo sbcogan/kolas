@@ -6,6 +6,7 @@ import { observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import styled from 'styled-components';
 import MeetDetailStore from './MeetDetailStore';
+import { VictoryBar, VictoryChart, VictoryAxis } from 'victory';
 
 const TabPane = Tabs.TabPane;
 
@@ -29,6 +30,13 @@ const columns = [
     dataIndex: 'placement',
     key: 'placement'
   }
+];
+
+const fakedata = [
+  { quarter: 1, earnings: 13000 },
+  { quarter: 2, earnings: 16500 },
+  { quarter: 3, earnings: 14250 },
+  { quarter: 4, earnings: 19000 }
 ];
 
 @observer
@@ -82,12 +90,22 @@ class MeetDetail extends React.Component<Props> {
   render() {
     return (
       <Flex auto>
-        <Box w={[1, 3 / 4, 3 / 4]}>
-          {this.renderMeetContent()}
-        </Box>
+        <Box w={[1, 3 / 4, 3 / 4]}>{this.renderMeetContent()}</Box>
         <Box w={[1, 1 / 4, 1 / 4]}>
           <AddOrInfo auto align="center" justify="center">
-            Ad or More Info
+            {}
+            <VictoryChart domainPadding={20}>
+              <VictoryAxis
+              //tickValues={[1, 2, 3, 4]}
+              //tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
+              />
+              <VictoryAxis
+                dependentAxis
+                // tickFormat specifies how ticks should be displayed
+                //tickFormat={(x) => (`$${x / 1000}k`)}
+              />
+              <VictoryBar data={this.store.meet} x="team" y="placement" />
+            </VictoryChart>
           </AddOrInfo>
         </Box>
       </Flex>

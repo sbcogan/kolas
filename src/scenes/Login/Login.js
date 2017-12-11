@@ -10,7 +10,7 @@ import { colors } from 'constants/styles';
 import LoginStore from './LoginStore';
 import UserStore from 'stores/UserStore';
 import UiStore from 'stores/UiStore';
-import banner from 'assets/Banner1.jpg';
+import banner from 'assets/banner.jpg';
 import Input from 'components/Input';
 
 type Props = {

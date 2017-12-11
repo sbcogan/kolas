@@ -75,7 +75,7 @@ class Kolas extends React.Component<Props> {
             </Button>
           </InputRow>
           <TitleRow>
-            <h1>All Predicted At Large Bids</h1>
+            <h1>Predicted Rankings</h1>
           </TitleRow>
           <FlexTable
             bordered
